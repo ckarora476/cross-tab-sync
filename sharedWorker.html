@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button id="test">Say Hi to worker</button>
+  <button id="test1">Ping the worker</button>
+  <div id="content"></div>
+
+  <div style="display: flex; justify-content:space-between">
+    <iframe src="/sharedWorkerIframe.html"  height="300" ></iframe>
+    <iframe src="/sharedWorkerIframe.html"  height="300" ></iframe>
+    <iframe src="/sharedWorkerIframe.html"  height="300" ></iframe>
+    <iframe src="/sharedWorkerIframe.html" height="300"></iframe>
+   </div>>
+
+
+<script>
+
+const worker = new SharedWorker('/sharedWorker.js')
+worker.port.start()
+
+const content = document.getElementById('content')
+
+document.getElementById('test').addEventListener('click',()=>{
+  worker.port.postMessage({action:"HI"})
+})
+
+
+document.getElementById('test1').addEventListener('click',()=>{
+  worker.port.postMessage({action:"PING"})
+})
+
+
+worker.port.addEventListener('message', (event) =>{
+  if (event.data.action === "PONG"){
+      addMessage(event.data.action)
+  }
+})
+
+function addMessage(message){
+      var p = document.createElement('p');
+      p.innerHTML = message;
+      content.appendChild(p)
+}
+
+
+</script>
+</body>
+</html>

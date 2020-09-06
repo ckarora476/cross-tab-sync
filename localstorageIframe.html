@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <h1>Counter <span id="text" ></span> </h1>
+  <button id="button">Increment</button>
+
+  <script>
+
+    const button = document.getElementById('button');
+    const text = document.getElementById('text');
+    const count = +localStorage.getItem('counter') || 0;
+    renderText(count)
+
+    button.addEventListener('click',(event)=>{
+     const currentCount = +localStorage.getItem('counter') || 0
+     const newCount = currentCount + 1
+     localStorage.setItem('counter', newCount)
+     renderText(newCount)
+    })
+
+
+    function renderText(count) {
+      text.innerHTML = count.toString()
+    }
+
+    window.addEventListener('storage',(event)=>{
+        if (event.key === 'counter'){
+          renderText(event.newValue)
+        }
+    })
+
+  </script>
+</body>
+</html>

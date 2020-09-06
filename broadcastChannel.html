@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+
+  <div id="content"></div>
+  <button id="button" style="margin-left: 20px">Say Hi</button>
+
+  <div style="display: flex; justify-content:space-between">
+    <iframe src="/broadcastChannelIframe.html" height="300"></iframe>
+  </div>>
+
+  <script>
+
+    const button = document.getElementById('button');
+    const content = document.getElementById('content');
+    const channel = new BroadcastChannel("test")
+
+    button.addEventListener('click',(event)=>{
+      addMessage("Hi")
+      channel.postMessage("Hi")
+    })
+
+    channel.addEventListener('message',(event)=>{
+      addMessage(event.data)
+    })
+
+    function addMessage(message){
+      var p = document.createElement('p');
+      p.innerHTML = message;
+      content.appendChild(p)
+    }
+
+
+  </script>
+</body>
+
+</html>

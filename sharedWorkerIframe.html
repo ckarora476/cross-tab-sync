@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <div id="content"></div>
+
+<script>
+
+const worker = new SharedWorker('/sharedWorker.js')
+worker.port.start()
+
+const content = document.getElementById('content')
+
+worker.port.addEventListener('message', (event) =>{
+  if (event.data.action === "BROADCAST"){
+      addMessage(event.data.action)
+  }
+
+  if (event.data.action === "WORKER_POLL"){
+      addMessage(event.data.action)
+  }
+})
+
+function addMessage(message){
+      var p = document.createElement('p');
+      p.innerHTML = message;
+      content.appendChild(p)
+}
+
+
+</script>
+</body>
+</html>

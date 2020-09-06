@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <h1>Counter <span id="text" ></span> </h1>
+  <button id="button">Increment</button>
+
+  <script>
+
+    const button = document.getElementById('button');
+    const text = document.getElementById('text');
+    const count = +readCookie('counter') || 0;
+    let lastCookie = document.cookie; // 'static' memory between function calls
+
+    renderText(count)
+
+    button.addEventListener('click', (event) => {
+      const currentCount = +readCookie('counter') || 0
+      const newCount = currentCount + 1
+      writeCookie('counter', newCount)
+      renderText(newCount)
+    })
+
+    function checkCookie() {
+        let currentCookie = document.cookie;
+
+        if (currentCookie != lastCookie) {
+          renderText(+readCookie('counter'))
+          lastCookie = currentCookie; // store latest cookie
+        }
+
+    }
+
+    window.setInterval(checkCookie, 100000)
+
+
+    function renderText(count) {
+      text.innerHTML = count.toString()
+    }
+
+    function writeCookie(name, value) {
+      document.cookie = name + "=" + value
+    }
+
+    function readCookie(name) {
+      var nameEQ = name + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
+
+
+
+  </script>
+</body>
+</html>
