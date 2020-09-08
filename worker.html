@@ -6,16 +6,22 @@
   <title>Document</title>
 </head>
 <body>
-
+  <button id="test">Say Hi to worker</button>
   <div id="content"></div>
 
 <script>
 
+const worker = new Worker('/worker.js')
+
 const content = document.getElementById('content')
-const worker = new Worker('./worker.js')
+
+document.getElementById('test').addEventListener('click',()=>{
+  worker.postMessage("Hi")
+})
+
 
 worker.addEventListener('message', (event) =>{
-    console.data("Received Message", event.data)
+      addMessage(event.data)
 })
 
 function addMessage(message){
@@ -23,7 +29,6 @@ function addMessage(message){
       p.innerHTML = message;
       content.appendChild(p)
 }
-
 
 </script>
 </body>
