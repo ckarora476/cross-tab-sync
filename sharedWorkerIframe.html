@@ -6,16 +6,17 @@
   <title>Document</title>
 </head>
 <body>
-
   <div id="content"></div>
 
+
 <script>
+const sharedWorker = new SharedWorker('/sharedWorker.js')
+sharedWorker.port.start()
 
 const content = document.getElementById('content')
-const worker = new Worker('./worker.js')
 
-worker.addEventListener('message', (event) =>{
-    console.data("Received Message", event.data)
+sharedWorker.port.addEventListener('message', (event) =>{
+   addMessage(event.data)
 })
 
 function addMessage(message){
@@ -23,7 +24,6 @@ function addMessage(message){
       p.innerHTML = message;
       content.appendChild(p)
 }
-
 
 </script>
 </body>

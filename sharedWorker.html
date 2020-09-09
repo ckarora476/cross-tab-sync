@@ -7,38 +7,43 @@
 </head>
 <body>
   <button id="test">Say Hi to worker</button>
-  <button id="test1">Ping the worker</button>
-  <div id="content"></div>
+  <button id="test1">Say Hello To All</button>
+  <button id="test2">Say Bonjour To Alternate Iframes </button>
 
   <div style="display: flex; justify-content:space-between">
-    <iframe src="/sharedWorkerIframe.html"  height="300" ></iframe>
-    <iframe src="/sharedWorkerIframe.html"  height="300" ></iframe>
-    <iframe src="/sharedWorkerIframe.html"  height="300" ></iframe>
+    <div id="content"></div>
+   <div>
+     <iframe src="/sharedWorkerIframe.html" height="300"></iframe>
+     <iframe src="/sharedWorkerIframe.html" height="300"></iframe>
     <iframe src="/sharedWorkerIframe.html" height="300"></iframe>
-   </div>>
-
+    <iframe src="/sharedWorkerIframe.html" height="300"></iframe>
+  </div>
+  </div>
 
 <script>
 
-const worker = new SharedWorker('/sharedWorker.js')
-worker.port.start()
+const sharedWorker = new SharedWorker('/sharedWorker.js')
+sharedWorker.port.start()
 
 const content = document.getElementById('content')
 
 document.getElementById('test').addEventListener('click',()=>{
-  worker.port.postMessage({action:"HI"})
+  sharedWorker.port.postMessage("HI")
 })
 
 
 document.getElementById('test1').addEventListener('click',()=>{
-  worker.port.postMessage({action:"PING"})
+  sharedWorker.port.postMessage("HELLO")
+})
+
+document.getElementById('test2').addEventListener('click',()=>{
+  sharedWorker.port.postMessage("BONJOUR")
 })
 
 
-worker.port.addEventListener('message', (event) =>{
-  if (event.data.action === "PONG"){
-      addMessage(event.data.action)
-  }
+sharedWorker.port.addEventListener('message', (event) =>{
+  console.log("Recieved Message", event.data)
+   addMessage(event.data)
 })
 
 function addMessage(message){

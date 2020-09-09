@@ -9,20 +9,22 @@
 
 <body>
 
-
+  <button id="button" style="margin-left: 20px">Say Hello To All</button>
   <div id="content"></div>
-  <button id="button" style="margin-left: 20px">Say Hi</button>
 
+
+  </div>
 
   <script>
+
 
     const button = document.getElementById('button');
     const content = document.getElementById('content');
     const channel = new BroadcastChannel("test")
 
     button.addEventListener('click',(event)=>{
-      addMessage("Hi")
-      channel.postMessage("Hi")
+      addMessage("Hello")
+      channel.postMessage("Hello")
     })
 
     channel.addEventListener('message',(event)=>{

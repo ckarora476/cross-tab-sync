@@ -10,13 +10,31 @@ onconnect = function (e) {
   port.onmessage = function (event) {
 
     console.log("Recieved Message: ", event.data)
-    const action = event.data.action
 
-    switch (action) {
-      case "PING": {
-        this.postMessage({ action: "PONG" })
-      }
-
+    if (event.data === "HI") {
+      this.postMessage("HI From Worker")
+      return
     }
+
+    if (event.data === "HELLO") {
+      ports.forEach(portInst => portInst.postMessage("HELLO From Worker"))
+      return
+    }
+
+    if (event.data === "BONJOUR") {
+      ports.forEach((portInst, index) => {
+        if (index % 2 === 0) { return }
+        portInst.postMessage("BONJOUR From Worker")
+      })
+      return
+    }
+
   }
 }
+
+function broadcast(message) {
+  ports.forEach(portInst => portInst.postMessage(message))
+}
+
+
+
